@@ -1,0 +1,18 @@
+Data Stored:
+Bank Account number - Unique?
+Name of Account Holder
+Email address?
+Ammount in the Account
+Account Type? - checking or savings
+
+Opperations:
+#Check current balance
+#Deposit money
+#Withdraw money
+#Transfer money between accounts
+
+Things to Consider:
+#User Authentication?
+#Creating Accounts?
+#closing accounts?
+#opening new accounts?

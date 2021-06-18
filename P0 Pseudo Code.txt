@@ -1,0 +1,71 @@
+Control Flow Idea 1
+
+START OF FIRST WHILE LOOP
+Print hello message
+Ask user to input account number
+get user input
+Check if Account exists
+
+If it exists:
+show user their balance
+
+else; (it doesnt exist)
+ask user if they want to create an account
+Assign the user an account number
+set balance to 0
+END OF FIRST WHILE
+
+START OF SECOND WHILE LOOP
+Show the operations menu
+ask the user for input (probably just use numbers for simplicity)
+get user input
+
+if they want to check their balance:
+ask which account to view
+print their balance
+continue loop2
+
+if they want to deposit money:
+ask which account they want to deposit to
+ask for the ammount
+add it to their balance
+continue loop2
+
+if they want to withdraw money:
+ask for which account they want to withdraw from (possibly print account balance)
+ask for the amount
+if balance < amount:
+tell them they ahve insufficient funds
+else: (amount <= balance)
+balance = balance - amount
+continue loop2
+
+If they want to transfer money:
+check if the user has atleast 2 accounts
+ask which account is the target
+ask which account is the destination
+check if target account has a balance greather than 0
+get input for the ammount they want to transfer
+if target account balance < input:
+tell user insufficient funds
+else: (input <= target account balance)
+target account blannce = target account balance - input
+destination account balance = destination account balance + input
+continue loop2
+
+If they want to open a new account:
+ask what type of account
+create new account
+continue loop2
+
+if they want to close an account:
+ask which account
+if target accounts balance != 0:
+tell the suer the accounts balance must be 0 to close
+else: (accounts balance is 0)
+close (remove?) the account
+continue loop2
+
+If they want to quit:
+set a bool to false
+end loop2

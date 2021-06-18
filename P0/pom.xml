@@ -3,4 +3,32 @@
   <groupId>com.revature</groupId>
   <artifactId>Project0</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
+  <!-- In this properties tag, I'm just setting our Java version to Java 1.8 -->
+  <properties>
+  		<maven.compiler.source>1.8</maven.compiler.source>
+  		<maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  
+  <!-- This is where we'll put our dependencies -->
+  <dependencies>
+  	<!-- We want to use Log4j2 for Logging. We need a Log4j2 dependency -->
+ 	<!-- I simply googled Log4J dependency and grabbed the one for Maven -->
+	 <dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-core</artifactId>
+	    <version>2.14.1</version>
+	  </dependency>
+	  
+	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-api</artifactId>
+	    <version>5.8.0-M1</version>
+	    <scope>test</scope>
+	</dependency>
+  </dependencies>
+
+
+
 </project>
