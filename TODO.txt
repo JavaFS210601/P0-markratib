@@ -1,0 +1,5 @@
+Create inventory class
+
+finish delUser function in User Class
+integrate the Authentication Class into the Menu Class
+Put the Menu Class back in main

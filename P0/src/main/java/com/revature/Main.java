@@ -7,11 +7,15 @@ public class Main
 
 	public static void main(String[] args) 
 	{
+		//THIS IS OLD AND IS NOT USED.
 		//create Menu object
-		Menu poorMenu = new Menu();
+		//Menu poorMenu = new Menu();
 		//Show the Main Menu
-		poorMenu.showMainMenu();
+		//poorMenu.mainMenu();
+		
+		Authentication auth = new Authentication();
+		auth.Begin();
 
-	}
+	}/**********************************END MAIN**********************************/
 
 }

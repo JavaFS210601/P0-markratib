@@ -27,6 +27,16 @@
 	    <version>5.8.0-M1</version>
 	    <scope>test</scope>
 	</dependency>
+	
+	<!-- This dependency will let us establish JDBC (Java Database Connectivity) -->
+  	<dependency>
+		<groupId>org.postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+		<version>42.2.14</version>
+	</dependency>
+		
+	<!--  Some kind of console parser or something, should allow me to clear the console -->
+	<!--  https://github.com/jline/jline2 -->
   </dependencies>
 
 
