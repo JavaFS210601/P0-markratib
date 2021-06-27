@@ -1,20 +1,29 @@
 package com.revature.models;
 
+import java.util.List;
 import java.util.Scanner;
+import com.revature.daos.UserDao;
+import com.revature.models.MenuSwitch;
 
-/***************************************
-Menu.java
-Function Definitions (or Methods....):
-
-***************************************/
+/*FUNCTIONS: 
+ * public void mainMenu()
+ * protected void gachaMenu()
+ * public int getNumInput(String theMenu)
+ * public int getNumInput()
+ */
 public class Menu 
 {
-	/*This is will be the root for the rest of the program.
-	 * All other menus will spawn from this one.
-	 */
 	public void mainMenu()
 	{
-		String menu = "Please enter your user name: ";
+		MenuSwitch poorSwitch = new MenuSwitch();
+		String menu = "*****************************\n"
+				+ "MAIN MENU OPTTIONS:\n"
+				+ "*****************************\n"
+				+ "1) Log in\n"
+				+ "2) Create a user\n"
+				+ "3) Delete a user\n"
+				+ "4) Quit\n"
+				+ "Please enter a number: ";
 		boolean stayIn = true;
 		int userChoice = 0;
 		//loop to get user input
@@ -25,28 +34,35 @@ public class Menu
 			//get user input
 			userChoice = getNumInput(menu);
 			//switch on the user input depending on the menu
-			stayIn = menuSwitch(userChoice);
+			stayIn = poorSwitch.mainMenuSwitch(userChoice);
+		}while(stayIn);
+		
+	}/********************************END MainMenu********************************/
+	
+	protected void gachaMenu(User curUser) 
+	{
+		MenuSwitch poorSwitch = new MenuSwitch();
+		String menu = "*****************************\n"
+				+ "Current User: " + curUser.getUser_name() + "\n"
+				+ "*****************************\n"
+				+ "1) Get something\n"
+				+ "2) Get something COOL\n"
+				+ "3) Look at your inventory\n"
+				+ "4) Check your wallet\n"
+				+ "5) Sell an item\n"
+				+ "6) Change password\n"
+				+ "7) Logout to main menu";
+		boolean stayIn = true;
+		int userChoice = 0;
+		do
+		{
+			System.out.println(menu);
+			System.out.print("Please enter a number: ");
+			userChoice = getNumInput();
+			stayIn = poorSwitch.gachaMenuSwitch(userChoice, curUser);
 		}while(stayIn);
 
-	}/**********************************END MAINMenu**********************************/
-	//No argument getStr. This gets the next string without whitespace, then gets the rest of the input stream.
-	public String getStrInput()
-	{
-		String buf;
-		Scanner input = new Scanner(System.in);
-		
-		buf = input.next();//get the next string without newline
-		input.nextLine();//get the next newline from the input stream
-		
-		return buf;//return user input
-	}
-	//not implemented
-	public String getStrInput(String stuff)
-	{
-		String userString = "";
-		
-		return userString;
-	}
+	}/********************************END gachaMenu********************************/
 	
 	public int getNumInput(String theMenu)
 	{
@@ -67,18 +83,22 @@ public class Menu
 			}
 			else//user didnt enter an integer, get the next line and loop				
 			{
-				System.out.println(theMenu);
+				System.out.print("Invalid input, Enter a number: ");
+//				System.out.println(theMenu);
 				input.nextLine();
 			}//END ELSE BLOCK
 		}//END WHILE BLOCK
 		
 		return userChoice;
-	}
+	}/********************************END getNumInput********************************/
 	
 	public int getNumInput()
 	{
+		//create a scanner for input
 		Scanner input = new Scanner(System.in);
+		//bool for loop control
 		boolean stayIn = true;
+		//hold the users input
 		int userChoice = 0;
 		
 		//parse user input
@@ -99,39 +119,7 @@ public class Menu
 		}//END WHILE BLOCK
 		
 		return userChoice;
-	}
+	}/********************************END getNumInput********************************/
 	
-	private boolean menuSwitch(int userChoice) 
-	{
-		boolean stayIn = true;
-		switch(userChoice)
-		{
-		case 1://do account stuff
-			int accInput = 0;
-			String accPass;
-			boolean authenticated = false;
-			
-			//allow user to attempt authentication 3 times
-			for(int i = 0; i < 3; i++)
-			{
-				accInput = getNumInput();
-			}
-			break;
-			
-		case 2://create account
-			//do stuff
-			break;
-			
-		case 3://quit
-			stayIn = false;
-			break;
-			
-		default://will only occur if user input is not in range of the menu
-			System.out.println("Not a valid choice. Try again...");
-		}
-		
-		return stayIn;
-		
-	}/**********************************END MENUSWITCH**********************************/
 	
-}/**********************************END OF CLASS**********************************/
+}

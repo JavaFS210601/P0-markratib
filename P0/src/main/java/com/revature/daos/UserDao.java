@@ -43,7 +43,9 @@ public class UserDao implements UserDaoInterface
 				//create a new employee object from each returned record
 				User u = new User(
 						rs.getInt("user_id"),
-						rs.getString("user_name"));
+						rs.getString("user_name"),
+						rs.getString("user_pw"),
+						rs.getInt("user_wallet"));
 				
 				userList.add(u);//add the new employee to our ArrayList
 			}
@@ -58,8 +60,26 @@ public class UserDao implements UserDaoInterface
 	}/********************************END getUsers********************************/
 	
 	@Override
-	public void addUser(String username) 
+	public User getUser(String username) 
 	{
+		List<User> userList = getUsers();
+		User user = null;//create a user object to hold the user we just created
+		for(User u: userList)//loop through the list of users, comparing username to each
+		{
+			//check if the usernames are equivalent
+			if(u.getUser_name().compareTo(username) == 0)
+			{
+				user = u;
+				break;
+			}
+		}
+		return user;
+	}/********************************END getUser********************************/
+	
+	@Override
+	public boolean addUser(String username, String userpass) 
+	{
+		boolean success = false;
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
 			//check if the username is already in the database
@@ -78,55 +98,156 @@ public class UserDao implements UserDaoInterface
 			
 			if(!dupe)//if this is not a duplicate username...
 			{
-				String sqlInsert1 = "insert into users (user_name)"
-						+ "values(?);";
+				//this string will insert the user into our user table
+				String sqlInsert1 = "insert into users (user_name, user_pw)"
+						+ "values(?, ?);";
+				//this string will create an entry in the inventory table, and assign the new users
+				//user_id as the foreign key for that inventory
 				String sqlInsert2 = "insert into user_inventories (user_id_fk)"
 						+ "values(?);";
+				//Make the user's inventory not null, becuase that causes problems for some reason :)
+				String sqlUpdate = "Update user_inventories set inventory[?] = 1 where user_id_fk = ?;";
+				//create the statement for user insertion
 				PreparedStatement ps = conn.prepareStatement(sqlInsert1);
+				//update the statement with the username for the entry
 				ps.setString(1, username);
-				
-				ps.executeUpdate();//execute the sql statement
+				ps.setString(2, userpass);
+				//execute the sql statement to insert into the users table
+				ps.executeUpdate();
 				
 				userList = getUsers();//get an updated list of users
-				User newUser = null;
+				User newUser = null;//create a user object to hold the user we just created
 				for(User u: userList)//loop through the list of users, comparing username to each
 				{
-					//check of the usernames are equivalent
+					//check if the usernames are equivalent
 					if(u.getUser_name().compareTo(username) == 0)
 					{
 						newUser = u;
 						break;
 					}
 				}
+				//INVENTORY CREATION
 				//if, for some reason newUser wasn't assigned a value, check
 				if(newUser != null)
 				{
+					//update the statement with the user_id for the entry
 					ps = conn.prepareStatement(sqlInsert2);
 					ps.setInt(1, newUser.getUser_id());
 					ps.executeUpdate();
+					success = true;
 				}
 				else
 				{
-					System.out.println("Username wasn't found in addUser...");
+					System.out.println("Username wasn't found in addUser...\n"
+							+ "Entry in the inventory table was not created...\n"
+							+ "Check the database for problems...");
 				}
+				ps = conn.prepareStatement(sqlUpdate);
+				ps.setInt(2, newUser.getUser_id());
+				if(newUser != null)
+				{
+					//set all inventory spaces to 0
+					for(int i = 0; i<10; i++)
+					{
+						ps.setInt(1, i);
+						ps.executeUpdate();
+					}
+				}
+				
 			}
 			else//this is a duplicate username
 			{
-				System.out.println("Duplicate username..."
-						+ " Not adding: " + username);
+				success = false;
+				System.out.println("This is a duplicate username...");
 			}
-
 			
 		}catch(SQLException e)
 		{
-			
+			System.out.println("Problem adding user " + username);
+			e.printStackTrace();
+			System.exit(-1);
 		}
-	}
+		return success;
+	}/********************************END addUser********************************/
 
 	@Override
-	public void delUser(String username) 
+	public void delUser(int userId) 
 	{
+		try(Connection conn = ConnectionUtil.getConnection())
+		{
+			//check if the username is in the database
+			List<User> userList = getUsers();
+			boolean present = false;
+			
+			for(User u: userList)//loop through the list of users, comparing u.user_id to userId
+			{
+				//check of the userID and u.user_id are equivalent
+				if(u.getUser_id() == userId)
+				{
+					present = true;//userId is in the database
+					break;//get out of the loop
+				}
+			}
+			
+			if(present)//userId is in the database, continue with deletion
+			{
+				String sql = "delete fro"
+						+ "m users where user_id = "
+						+ Integer.toString(userId) + ";";//This might work....
+				Statement s = conn.createStatement();
+				
+				s.execute(sql);
+				
+			}
+			else//userId is not in the database
+			{
+				System.out.println("Could not find "
+						+ userId + " in the database...");
+			}
+		}catch(SQLException e)
+		{
+			System.out.println("Problem deleting user with id " + userId);
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}/********************************END delUser********************************/
+
+	@Override
+	public void addToWallet(User curUser) 
+	{
+		try(Connection conn = ConnectionUtil.getConnection())
+		{
+			String sql = "update users set user_wallet = ? where user_id = ?";
+			//new amount is current wallet amount + new amount
+			//do sql stuff
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, curUser.getUser_wallet());
+			ps.setInt(2, curUser.getUser_id());
+			ps.executeUpdate();
+			
+		
+		}catch(SQLException e)
+		{
+			System.out.println("Problem adding to user wallet ");
+			e.printStackTrace();
+			System.exit(-1);
+		}
 		
 	}
 
+	@Override
+	public void setWallet(User curUser, int amount) 
+	{
+		try(Connection conn = ConnectionUtil.getConnection())
+		{
+			
+		}catch(SQLException e)
+		{
+			System.out.println("Problem setting user wallet");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		
+	}
+	
 }

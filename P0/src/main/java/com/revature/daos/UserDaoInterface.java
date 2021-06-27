@@ -7,7 +7,14 @@ public interface UserDaoInterface
 {
 	public List<User> getUsers();
 	
-	public void addUser(String username);
+	public User getUser(String username);
 	
-	public void delUser(String username);
+	public boolean addUser(String username, String userpass);
+	
+	public void delUser(int userId);
+	
+	public void addToWallet(User curUser);
+	
+	public void setWallet(User curUser, int amount);
+
 }

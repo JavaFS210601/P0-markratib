@@ -1,6 +1,8 @@
 package com.revature;
 
-import com.revature.models.*;
+import com.revature.models.Authentication;
+import com.revature.models.Menu;
+
 
 public class Main 
 {
@@ -9,12 +11,10 @@ public class Main
 	{
 		//THIS IS OLD AND IS NOT USED.
 		//create Menu object
-		//Menu poorMenu = new Menu();
+		Menu poorMenu = new Menu();
 		//Show the Main Menu
-		//poorMenu.mainMenu();
+		poorMenu.mainMenu();
 		
-		Authentication auth = new Authentication();
-		auth.Begin();
 
 	}/**********************************END MAIN**********************************/
 
