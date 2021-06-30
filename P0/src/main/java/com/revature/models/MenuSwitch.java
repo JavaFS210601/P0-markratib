@@ -91,6 +91,11 @@ public class MenuSwitch
 				System.out.print("Enter password again: ");
 				newUserpass2 = input.nextLine();
 				
+				if(newUserpass.compareTo(newUserpass2) != 0)
+				{
+					System.out.println("The passwords did not match... Try again...");
+				}
+				
 			}while(newUserpass.compareTo(newUserpass2) != 0);//loop
 			
 			if(ud.addUser(newUsername, newUserpass))//if the user is added correctly, do stuff
@@ -112,17 +117,20 @@ public class MenuSwitch
 				System.out.println("User was not created successfully");
 	
 			}
+			
+			poorMenu.wait(2500);
 			break;
 		}//END OF CASE 2
 			
-		case 3://delete a suer
+		case 3://delete a user6
+			
 		{
 			String username;
 			//print out the list of users
 			printUsernames(userList);
 			for(int i = 0; i < 4; i++)
 			{
-				System.out.println("Attempy " + (i+1) + "/4");
+				System.out.println("Attempt " + (i+1) + "/4");
 				System.out.print("Enter the  username you wish to delete: ");//prompt for the username
 				username = input.nextLine();//get the users input
 //				System.out.println("");//formating
@@ -143,6 +151,7 @@ public class MenuSwitch
 							+ "\n(HINT: enter the username, not user_id...)");
 				}
 			}
+			poorMenu.wait(2500);
 			break;
 		}//END OF CASE 3
 			
@@ -207,8 +216,7 @@ public class MenuSwitch
 							//add the item to the inventory
 							System.out.println("Found " + itemList.get(randomIndex).getItem_name() + "!");
 							id.addToInventory(itemList.get(randomIndex), curInv);
-							System.out.println("Press enter to continue...");
-							input.nextLine();
+//							poorMenu.wait(2500);
 							foundItem = true;
 						}
 					}
@@ -225,8 +233,7 @@ public class MenuSwitch
 				if(curUser.getUser_wallet() < 100)
 				{
 					System.out.println("Insufficient Funds...");
-					System.out.println("Press enter to continue...");
-					input.nextLine();
+//					poorMenu.wait(2500);
 				}
 				else//user has enough funds
 				{
@@ -265,8 +272,7 @@ public class MenuSwitch
 										//add the item to the inventory
 										System.out.println("Found " + itemList.get(randomIndex).getItem_name() + "!");
 										id.addToInventory(itemList.get(randomIndex), curInv);
-										System.out.println("Press enter to continue...");
-										input.nextLine();
+//										poorMenu.wait(2500);
 										foundItem = true;
 									}
 								}
@@ -279,15 +285,13 @@ public class MenuSwitch
 			case 3://Look at inventory
 			{
 				printInventory(curUser);
-				System.out.println("Press enter to continue...");
-				input.nextLine();
+//				poorMenu.wait(2500);
 				break;
 			}//END CASE 3
 			case 4://Check your wallet
 			{
 				System.out.println("You currently have " + curUser.getUser_wallet() + " fun bucks.");
-				System.out.println("Press enter to continue...");
-				input.nextLine();
+//				poorMenu.wait(2500);
 				break;
 			}//END CASE 4
 			case 5://Sell an item
@@ -324,15 +328,27 @@ public class MenuSwitch
 			}//END CASE 5
 			case 6://Change password
 			{
-				System.out.println("CURRENTLY UNDER CONSTRUCTION!!!");
+				System.out.println("Please enter your new password");
+				String newUserpass;
+				String newUserpass2;
+				
+				do//Get the user's new password
+				{
+					System.out.print("Enter your password: ");
+					newUserpass = input.nextLine();
+					System.out.print("Enter password again: ");
+					newUserpass2 = input.nextLine();
+					
+				}while(newUserpass.compareTo(newUserpass2) != 0);//loop
+				
+				ud.updatePassword(curUser, newUserpass);
 				break;
 				
 			}//END CASE 6
 			case 7://QUit
 			{
 				System.out.println("Exiting to main menu...");
-				System.out.println("Press enter to continue...");
-				input.nextLine();
+//				poorMenu.wait(2500);
 				stayIn = false;
 				break;
 			}
@@ -394,4 +410,5 @@ public class MenuSwitch
 		}
 	}
 	/**********************************END printInventory**********************************/
+	
 }

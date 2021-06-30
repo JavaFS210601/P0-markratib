@@ -16,5 +16,7 @@ public interface UserDaoInterface
 	public void addToWallet(User curUser);
 	
 	public void setWallet(User curUser, int amount);
+	
+	public void updatePassword(User curUser, String newPassword);
 
 }

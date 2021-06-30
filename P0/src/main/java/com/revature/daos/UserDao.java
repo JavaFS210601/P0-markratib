@@ -267,11 +267,31 @@ public class UserDao implements UserDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Problem setting user wallet");
-			log.error("setWallt Exception: ", e);
+			log.error("setWallet Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		
+	}
+	
+	@Override
+	public void updatePassword(User curUser, String newPassword)
+	{
+		try(Connection conn = ConnectionUtil.getConnection())
+		{
+			String sql = "update users set user_pw = ? where user_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, newPassword);
+			ps.setInt(2, curUser.getUser_id());
+			ps.executeUpdate();
+			
+		}catch(SQLException e)
+		{
+			System.out.println("Problem changing user password");
+			log.error("update PasswordException: ", e);
+			e.printStackTrace();
+			System.exit(-1);
+		}
 	}
 	
 }

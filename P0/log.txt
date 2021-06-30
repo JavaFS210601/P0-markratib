@@ -12,3 +12,39 @@
 2021-06-28 16:15:01 INFO  UserDao:171 - Added hello to the users table.
 2021-06-28 16:18:45 INFO  UserDao:90 - Adding  to the users table.
 2021-06-29 20:06:21 INFO  UserDao:198 - Removing user with user_id 3.
+2021-06-29 21:30:54 INFO  UserDao:90 - Adding hai :) to the users table.
+2021-06-29 21:30:54 INFO  UserDao:179 - Added hai :) to the users table.
+2021-06-29 21:31:14 INFO  UserDao:90 - Adding bob to the users table.
+2021-06-29 21:31:14 INFO  UserDao:179 - Added bob to the users table.
+2021-06-29 21:31:30 INFO  UserDao:198 - Removing user with user_id 5.
+2021-06-29 21:31:43 INFO  UserDao:90 - Adding bob to the users table.
+2021-06-29 21:31:43 INFO  UserDao:179 - Added bob to the users table.
+2021-06-29 21:32:09 INFO  Authentication:29 - User hai :) authenticated
+2021-06-29 21:32:21 INFO  InventoryDao:75 - Adding a stick to user_id: 4
+2021-06-29 21:32:32 INFO  InventoryDao:113 - Removing 3 from user_id: 4
+2021-06-29 21:38:57 WARN  Authentication:35 - Unsuccessfull login attempt with username: bob
+2021-06-29 21:39:01 INFO  Authentication:29 - User bob authenticated
+2021-06-29 21:41:42 INFO  Authentication:29 - User bob authenticated
+2021-06-29 21:41:57 WARN  Authentication:35 - Unsuccessfull login attempt with username: bob
+2021-06-29 21:42:03 INFO  Authentication:29 - User bob authenticated
+2021-06-29 21:53:13 INFO  UserDao:90 - Adding kevin to the users table.
+2021-06-29 21:53:13 INFO  UserDao:179 - Added kevin to the users table.
+2021-06-29 21:55:02 INFO  UserDao:90 - Adding kevin to the users table.
+2021-06-29 21:55:19 INFO  UserDao:90 - Adding james to the users table.
+2021-06-29 21:55:19 INFO  UserDao:179 - Added james to the users table.
+2021-06-29 21:55:50 INFO  UserDao:198 - Removing user with user_id 7.
+2021-06-29 21:55:54 INFO  UserDao:198 - Removing user with user_id 8.
+2021-06-29 21:56:01 INFO  UserDao:198 - Removing user with user_id 6.
+2021-06-29 21:56:04 INFO  Authentication:29 - User merk authenticated
+2021-06-29 21:57:53 INFO  Authentication:29 - User merk authenticated
+2021-06-29 21:58:54 INFO  Authentication:29 - User merk authenticated
+2021-06-29 21:58:57 INFO  InventoryDao:75 - Adding a rock to user_id: 1
+2021-06-29 22:00:00 INFO  Authentication:29 - User merk authenticated
+2021-06-29 22:00:03 INFO  InventoryDao:75 - Adding a flower to user_id: 1
+2021-06-29 22:00:11 INFO  InventoryDao:75 - Adding a rock to user_id: 1
+2021-06-29 22:02:10 INFO  Authentication:29 - User merk authenticated
+2021-06-29 22:02:47 INFO  UserDao:90 - Adding merk to the users table.
+2021-06-29 22:04:38 INFO  UserDao:90 - Adding krem to the users table.
+2021-06-29 22:04:39 INFO  UserDao:179 - Added krem to the users table.
+2021-06-29 22:05:47 WARN  Authentication:35 - Unsuccessfull login attempt with username: krem
+2021-06-29 22:05:49 INFO  Authentication:29 - User krem authenticated

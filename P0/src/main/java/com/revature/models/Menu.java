@@ -29,6 +29,11 @@ public class Menu
 		//loop to get user input
 		do
 		{
+			for(int i = 0; i < 5; i++)
+			{
+				System.out.println("\n");
+			}
+			
 			//print the menu
 			System.out.print(menu);
 			//get user input
@@ -52,10 +57,21 @@ public class Menu
 				+ "5) Sell an item\n"
 				+ "6) Change password\n"
 				+ "7) Logout to main menu";
+
+		for(int i = 0; i < 5; i++)
+		{
+			System.out.println("\n");
+		}
+		
 		boolean stayIn = true;
 		int userChoice = 0;
 		do
 		{
+//			for(int i = 0; i < 5; i++)
+//			{
+//				System.out.println("\n\n");
+//			}
+			
 			System.out.println(menu);
 			System.out.print("Please enter a number: ");
 			userChoice = getNumInput();
@@ -121,5 +137,15 @@ public class Menu
 		return userChoice;
 	}/********************************END getNumInput********************************/
 	
+	public void wait(int mSeconds)
+	{
+		try
+		{
+			Thread.sleep(mSeconds);
+		}catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 }
