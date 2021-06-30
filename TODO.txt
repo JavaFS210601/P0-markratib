@@ -1,1 +1,5 @@
-LOGGING!!!!!!!!!!
+Check if logging is working corrently
+
+CURRENTLY LOGGING:
+	InventoryDao.addToInventory
+	InventoryDao.removeFromInventory

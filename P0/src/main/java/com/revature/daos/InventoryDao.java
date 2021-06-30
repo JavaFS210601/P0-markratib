@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.revature.models.Inventory;
 import com.revature.models.Item;
 import com.revature.models.User;
@@ -15,6 +17,8 @@ import java.sql.Array;
 
 public class InventoryDao implements InventoryDaoInterface 
 {
+	private static final Logger log = LogManager.getLogger(InventoryDao.class);
+	
 	@Override
 	public List<Inventory> getInventories() 
 	{
@@ -49,6 +53,7 @@ public class InventoryDao implements InventoryDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Something went wrong when trying to access your DB");
+			log.error("getInventories Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -67,6 +72,7 @@ public class InventoryDao implements InventoryDaoInterface
 	{
 		try(Connection conn = ConnectionUtil.getConnection())//try to establish a DB connection
 		{
+			log.info("Adding " + newItem.getItem_name() + " to user_id: " + curInv.getUser_id_fk());
 			String sql = "update user_inventories set inventory[?] = ? where user_id_fk = ?;";
 			//find which index has nothing
 			for(int i = 0; i<10; i++)
@@ -90,6 +96,7 @@ public class InventoryDao implements InventoryDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Something went wrong when trying to access your DB");
+			log.error("addToInventory Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -103,6 +110,7 @@ public class InventoryDao implements InventoryDaoInterface
 		
 		try(Connection conn = ConnectionUtil.getConnection())//try to establish a DB connection
 		{
+			log.info("Removing " + curInv.atIndex(index) + " from user_id: " + curInv.getUser_id_fk());
 			String sql = "update user_inventories set inventory[?] = 1 where user_id_fk = ?;";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, index);
@@ -113,6 +121,7 @@ public class InventoryDao implements InventoryDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Something went wrong when trying to access your DB");
+			log.error("removeFromInventory Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -152,7 +161,7 @@ public class InventoryDao implements InventoryDaoInterface
 		}
 		catch (SQLException e) 
 		{
-			// TODO Auto-generated catch block
+			log.error("printInventory Exception: ", e);
 			e.printStackTrace();
 		}
 	}

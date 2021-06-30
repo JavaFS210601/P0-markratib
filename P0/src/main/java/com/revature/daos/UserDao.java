@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 /*Functions:
@@ -23,6 +25,8 @@ import com.revature.util.ConnectionUtil;
 
 public class UserDao implements UserDaoInterface 
 {
+	private static final Logger log = LogManager.getLogger(UserDao.class);
+	
 	@Override
 	public List<User> getUsers() 
 	{
@@ -53,6 +57,7 @@ public class UserDao implements UserDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Something went wrong when trying to access your DB");
+			log.error("getUsers: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -82,88 +87,102 @@ public class UserDao implements UserDaoInterface
 		boolean success = false;
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
+			log.info("Adding " + username + " to the users table.");
 			//check if the username is already in the database
 			List<User> userList = getUsers();
 			boolean dupe = false;
-			
-			for(User u: userList)//loop through the list of users, comparing username to each
+			//if the user enters an empty string
+			if(username.compareTo("") == 0)
 			{
-				//check of the usernames are equivalent
-				if(u.getUser_name().compareTo(username) == 0)
-				{
-					dupe = true;
-					break;
-				}
+				log.error("I dont know how they got here...\nInside addUser username.compateto(\"\")");
+				System.out.println("Username cannot be empty...\nAlso, how did you get here???");
 			}
-			
-			if(!dupe)//if this is not a duplicate username...
+			//username is not an empty string
+			else
 			{
-				//this string will insert the user into our user table
-				String sqlInsert1 = "insert into users (user_name, user_pw)"
-						+ "values(?, ?);";
-				//this string will create an entry in the inventory table, and assign the new users
-				//user_id as the foreign key for that inventory
-				String sqlInsert2 = "insert into user_inventories (user_id_fk)"
-						+ "values(?);";
-				//Make the user's inventory not null, becuase that causes problems for some reason :)
-				String sqlUpdate = "Update user_inventories set inventory[?] = 1 where user_id_fk = ?;";
-				//create the statement for user insertion
-				PreparedStatement ps = conn.prepareStatement(sqlInsert1);
-				//update the statement with the username for the entry
-				ps.setString(1, username);
-				ps.setString(2, userpass);
-				//execute the sql statement to insert into the users table
-				ps.executeUpdate();
-				
-				userList = getUsers();//get an updated list of users
-				User newUser = null;//create a user object to hold the user we just created
 				for(User u: userList)//loop through the list of users, comparing username to each
 				{
-					//check if the usernames are equivalent
+					//check of the usernames are equivalent
 					if(u.getUser_name().compareTo(username) == 0)
 					{
-						newUser = u;
+						dupe = true;
 						break;
 					}
 				}
-				//INVENTORY CREATION
-				//if, for some reason newUser wasn't assigned a value, check
-				if(newUser != null)
-				{
-					//update the statement with the user_id for the entry
-					ps = conn.prepareStatement(sqlInsert2);
-					ps.setInt(1, newUser.getUser_id());
-					ps.executeUpdate();
-					success = true;
-				}
-				else
-				{
-					System.out.println("Username wasn't found in addUser...\n"
-							+ "Entry in the inventory table was not created...\n"
-							+ "Check the database for problems...");
-				}
-				ps = conn.prepareStatement(sqlUpdate);
-				ps.setInt(2, newUser.getUser_id());
-				if(newUser != null)
-				{
-					//set all inventory spaces to 0
-					for(int i = 0; i<10; i++)
-					{
-						ps.setInt(1, i);
-						ps.executeUpdate();
-					}
-				}
 				
+				if(!dupe)//if this is not a duplicate username...
+				{
+					//this string will insert the user into our user table
+					String sqlInsert1 = "insert into users (user_name, user_pw)"
+							+ "values(?, ?);";
+					//this string will create an entry in the inventory table, and assign the new users
+					//user_id as the foreign key for that inventory
+					String sqlInsert2 = "insert into user_inventories (user_id_fk)"
+							+ "values(?);";
+					//Make the user's inventory not null, becuase that causes problems for some reason :)
+					String sqlUpdate = "Update user_inventories set inventory[?] = 1 where user_id_fk = ?;";
+					//create the statement for user insertion
+					PreparedStatement ps = conn.prepareStatement(sqlInsert1);
+					//update the statement with the username for the entry
+					ps.setString(1, username);
+					ps.setString(2, userpass);
+					//execute the sql statement to insert into the users table
+					ps.executeUpdate();
+					
+					userList = getUsers();//get an updated list of users
+					User newUser = null;//create a user object to hold the user we just created
+					for(User u: userList)//loop through the list of users, comparing username to each
+					{
+						//check if the usernames are equivalent
+						if(u.getUser_name().compareTo(username) == 0)
+						{
+							newUser = u;
+							break;
+						}
+					}
+					//INVENTORY CREATION
+					//if, for some reason newUser wasn't assigned a value, check
+					if(newUser != null)
+					{
+						//update the statement with the user_id for the entry
+						ps = conn.prepareStatement(sqlInsert2);
+						ps.setInt(1, newUser.getUser_id());
+						ps.executeUpdate();
+						success = true;
+					}
+					else
+					{
+						System.out.println("Username wasn't found in addUser...\n"
+								+ "Entry in the inventory table was not created...\n"
+								+ "Check the database for problems...");
+					}
+					ps = conn.prepareStatement(sqlUpdate);
+					ps.setInt(2, newUser.getUser_id());
+					if(newUser != null)
+					{
+						//set all inventory spaces to 0
+						for(int i = 0; i<10; i++)
+						{
+							ps.setInt(1, i);
+							ps.executeUpdate();
+						}
+					}
+					
+				}
+				else//this is a duplicate username
+				{
+					success = false;
+					System.out.println("This is a duplicate username...");
+				}
+				if(success)
+				{
+					log.info("Added " + username + " to the users table.");
+				}
 			}
-			else//this is a duplicate username
-			{
-				success = false;
-				System.out.println("This is a duplicate username...");
-			}
-			
 		}catch(SQLException e)
 		{
 			System.out.println("Problem adding user " + username);
+			log.error("addUser Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -175,6 +194,8 @@ public class UserDao implements UserDaoInterface
 	{
 		try(Connection conn = ConnectionUtil.getConnection())
 		{
+			
+			log.info("Removing user with user_id " + userId + ".");
 			//check if the username is in the database
 			List<User> userList = getUsers();
 			boolean present = false;
@@ -207,6 +228,7 @@ public class UserDao implements UserDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Problem deleting user with id " + userId);
+			log.error("delUser Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -229,6 +251,7 @@ public class UserDao implements UserDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Problem adding to user wallet ");
+			log.error("addToWallet Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -244,6 +267,7 @@ public class UserDao implements UserDaoInterface
 		}catch(SQLException e)
 		{
 			System.out.println("Problem setting user wallet");
+			log.error("setWallt Exception: ", e);
 			e.printStackTrace();
 			System.exit(-1);
 		}

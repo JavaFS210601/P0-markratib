@@ -1,0 +1,8 @@
+2021-06-28 16:06:02 INFO  Authentication:29 - User merk authenticated
+2021-06-28 16:06:28 INFO  Authentication:29 - User merk authenticated
+2021-06-28 16:06:42 INFO  InventoryDao:113 - Removing 2 from user_id: 1
+2021-06-28 16:06:46 INFO  InventoryDao:113 - Removing 3 from user_id: 1
+2021-06-28 16:06:47 INFO  InventoryDao:113 - Removing 2 from user_id: 1
+2021-06-28 16:06:49 INFO  InventoryDao:113 - Removing 2 from user_id: 1
+2021-06-28 16:06:53 INFO  InventoryDao:113 - Removing 3 from user_id: 1
+2021-06-28 16:08:24 INFO  Authentication:29 - User merk authenticated

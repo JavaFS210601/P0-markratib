@@ -34,34 +34,43 @@ public class MenuSwitch
 			String username;
 			String userpass;
 			
-			//allow user to attempt authentication 3 times
+			//allow user to attempt authentication 4 times
 			printUsernames(userList);
 			
 			for(int i = 0; i < 4; i++)
 			{
-				System.out.println("Attempy " + (i+1) + "/4");
+				System.out.println("Attempt " + (i+1) + "/4");
 				System.out.print("Please enter your username: ");
 				username = input.nextLine();
-				System.out.print("Please enter your passowrd: ");
-				userpass = input.nextLine();
-				//If the user is found in the database...
-				if(auth.authenticate(username, userpass))
+				//if the user enters an empty string
+				if(username.compareTo("") == 0)
 				{
-					//User was found in the database, print the menu to do stuff
-					poorMenu.gachaMenu(ud.getUser(username));
-					break;
+					System.out.println("Username cannot be empty...");
 				}
-				else//user was not found in the database...
+				//username is not an empty string...
+				else
 				{
-					if(i < 2)
+					System.out.print("Please enter your passowrd: ");
+					userpass = input.nextLine();
+					//If the user is found in the database...
+					if(auth.authenticate(username, userpass))
 					{
-						System.out.println("User was not found, try again...");	
+						//User was found in the database, print the menu to do stuff
+						poorMenu.gachaMenu(ud.getUser(username));
+						break;
 					}
-					else// i == 2
+					else//user was not found in the database...
 					{
-						System.out.println("STOP IT");
-					}
-				}//END IF ELSE
+						if(i <= 4)
+						{
+							System.out.println("User was not found, try again...");	
+						}
+						else// i > 4
+						{
+							System.out.println("STOP IT");
+						}
+					}//END IF ELSE
+				}
 			}
 			break;
 		}//END OF CASE 1
@@ -125,6 +134,8 @@ public class MenuSwitch
 					System.out.println("Updated users:");
 					userList = ud.getUsers();//update the users list
 					printUsernames(userList);//print out the list of users
+					//get out of the loop
+					break;
 				}
 				else//username is not in the database
 				{
